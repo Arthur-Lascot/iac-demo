@@ -10,7 +10,16 @@ provider "aws" {
   }
 }
 
+variable "commit_sha" {
+  description = "Commit GitHub déclencheur"
+  type        = string
+}
+
 resource "aws_instance" "demo" {
   ami           = "ami-12345678"
   instance_type = "t2.micro"
+  tags = {
+    Name    = "LocalStackDemo-${substr(var.commit_sha, 0, 8)}"
+    Commit  = var.commit_sha
+  }
 }
